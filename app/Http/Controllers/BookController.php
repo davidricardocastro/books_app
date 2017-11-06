@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Book;
 use App\Author;
-class AuthorController extends Controller
+
+class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +15,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        return view('/author');
+        //
     }
 
     /**
@@ -22,9 +24,11 @@ class AuthorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        $view = view('/authors/edit');
-        $view->author = new Author;
+    {    
+        
+
+        $view = view('/books/edit');
+        $view->book = new Book;
         return $view;
     }
 
@@ -38,24 +42,30 @@ class AuthorController extends Controller
     {
         if($id)
         {
-            $author = Author::findOrFail($id);
+            $book = Book::findOrFail($id);
         }
         else
         {
-            $author = new Author();
+            $book = new Book();
         }
        
+       
 
-        $author->fill(request()->only([
-            'name',
-            'year'            
+        $book->fill(request()->only([
+            'author_id',
+            'title',
+            'published_at',
+            'finished_reading_at',
+            'my_review',
+            'my_rating'  
+            
         ]));
         
-        $author->save();
+        $book->save();
         
-        session()->flash('success_message', 'Author was successfully save'); 
+        session()->flash('success_message', 'Book was successfully save'); 
 
-        return redirect()->action('AuthorController@create', ['id' => $author->id]);
+        return redirect()->action('BookController@create', ['id' => $book->id]);
     }
 
     /**
@@ -66,11 +76,11 @@ class AuthorController extends Controller
      */
     public function show($id)
     {
-        $view = view('authors/detail');
+        $view = view('books/detail');
         
-        $author = Author::find($id);
-        //$author = Author::where('id',1)->first(); //equivalent to above
-        $view->author = $author;       
+        $book = Book::find($id);
+        
+        $view->book = $book;       
         
         return $view;
     }
@@ -83,10 +93,10 @@ class AuthorController extends Controller
      */
     public function edit($id)
     {
-        $author = Author::findOrFail($id);
+        $book = Book::findOrFail($id);
         
-        $view = view('/authors/edit');
-        $view->author = $author;
+        $view = view('/books/edit');
+        $view->book = $book;
         
         return $view;
     }
@@ -114,6 +124,7 @@ class AuthorController extends Controller
         //
     }
 
+
     public function listing()
     {
 
@@ -121,12 +132,12 @@ class AuthorController extends Controller
        
         //return view('/authors/list');
 
-        $view = view('authors/list');
+        $view = view('books/list');
     
-            //$all_movies = Movie::all();
-            $all_authors= Author::orderBy('year', 'dsc')->get();
+            $all_books = Book::all();
+            //$all_authors= Author::orderBy('year', 'dsc')->get();
     
-            $view->authors = $all_authors;
+            $view->books = $all_books;
     
             return $view;
             

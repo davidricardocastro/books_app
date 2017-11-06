@@ -1,30 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+@extends('/wrapper')
+
+@section('content')
     
+<div class="col-6 mt-5">
+<ul class="list-group" id="authorlist">
 
-<ul id="authorlist">
-
-
+<li class="list-group-item active">Authors</li>
 
 @foreach($authors as $author)
-<li>
+<li class="list-group-item">
 
 <a href="{{route('author detail', ['id'=> $author->id])}}">{{$author->name}}</a>
 ({{$author->year}})
- </li>
+ 
 
 </li>
 @endforeach
 
 
 </ul>
-
-</body>
-</html>
+</div>
+@endsection
